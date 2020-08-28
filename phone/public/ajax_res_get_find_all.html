@@ -1,0 +1,104 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<script src="js/jquery.min.js"></script>
+		<script src="js/popper.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<style type="text/css">
+		</style>
+		<script type="text/javascript">
+			function delphone(_pid){
+				var xhr=new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&&xhr.status==200){
+						var r=xhr.responseText;
+						if(r==1){
+								alert("删除成功");
+								show();
+						}else{
+								alert("删除失败");
+						}
+					}
+				}
+				xhr.open("delete",`/ajax/delphone/${_pid}`,true);
+				xhr.send();
+			}
+			function show(){
+					//1.
+				var xhr= new XMLHttpRequest();
+					//4.
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&&xhr.status==200){
+						var r=xhr.responseText;
+						var stus=JSON.parse(r);
+						var htmlstr=`
+						<table border="1" width="1000px" align="center" class="text-muted table-striped table-hover table-light " >
+						<tr align="center">
+							<th>编号</th>
+							<th>姓名</th>
+							<th>年龄</th>
+							<th>性别</th>
+							<th>电话</th>
+							<th>邮箱</th>
+							<th>操作</th>
+							</tr>
+						`;
+						for(var i=0;i<stus.length;i++){
+						if(stus[i].psex==1){
+							stus[i].psex="男";
+						}else if(stus[i].psex==0){
+							stus[i].psex="女";
+						}
+						else{
+							stus[i].psex="不祥";
+						}
+						htmlstr+=`
+						<tr align="center">
+							<td>${stus[i].pid}</td>
+							<td>${stus[i].pname}</td>
+							<td>${stus[i].page}</td>
+							<td>${stus[i].psex}</td>
+							<td>${stus[i].phone}</td>
+							<td>${stus[i].pemail}</td>
+							<td>
+							<a href="javascript:delphone(${stus[i].pid})">删除</a>
+							<a href="ajax_get_find.html?pid=${stus[i].pid}">修改</a>
+							</td>
+							</tr>
+						`;
+						}
+						htmlstr+=`</table>`;
+						n1.innerHTML=htmlstr;	
+					}
+				}
+					//2.
+					xhr.open("get",`/ajax/phone_list`,true);
+					//3.
+					xhr.send();
+			}
+		</script>
+</head>
+<body onload="show()" style="background: url(2.jpg);">
+		<div class="container">
+			<h1 class="text-center  text-white mt-3">联系人列表</h1>
+			<div id="n1"></div>	
+			<ul class="nav  justify-content-center mt-4">
+				<li class="nav-item  mr-2"><a href="ajax_post_add.html"class="btn btn-primary">添加联系人</a></li>
+				<li class="nav-item">
+					<div class="dropdown">
+						<button data-toggle="dropdown" type="button" class="btn btn-primary dropdown-toggle pb-1 mb-3">快速查找</button>
+						<ul class="dropdown-menu">
+							<li><a href="ajax_get_find_pname.html">姓名</a></li>
+							<li><a href="ajax_get_find_phone.html">电话</a></li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>
+
+	

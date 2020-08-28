@@ -1,0 +1,74 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<script src="js/jquery.min.js"></script>
+		<script src="js/popper.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script type="text/javascript">
+			function update(){
+				var _pname=pname.value;
+				var _page=page.value;
+				var _phone=phone.value;
+				var _pemail=pemail.value;
+				if(man.checked==true){
+					var _psex=1;
+				}else if(woman.checked==true){
+					var _psex=0;
+				}else{
+					var _psex=-1;
+				}
+				var xhr=new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+					if(xhr.status==200&&xhr.readyState==4){
+						var r=xhr.responseText;
+						if(r==1){
+							alert("添加成功");
+							location.href="ajax_res_get_find_all.html";
+						}else{
+							alert("添加失败");
+						}
+					}
+				}
+				xhr.open("post","/ajax/add",true);
+				xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				var formdata=`pname=${_pname}&page=${_page}&pemail=${_pemail}&phone=${_phone}&psex={_psex}`;
+				xhr.send(formdata);
+			
+			}
+		</script>
+		<style type="text/css">
+			.m1{position: relative;}
+			.m2{
+				width: 400px;height: 400px;
+				position: absolute;
+				top: -4px;
+				right:335px;
+				font-size: 21px;
+				}
+				.bt_1{
+					margin-left: 58px;
+					padding: 0 95px;
+				}
+		</style>
+	</head>
+	<body style="background: url(2.jpg)";>
+		<div class="container">
+			<h1 class="text-center  text-white mt-3">添加联系人</h1>
+			<div class="m1">
+				<div class="m2 text-light ">
+					姓名<input type="text" id="pname" class="mt-5 ml-2"><br>
+					年龄<input type="text" id="page"class="mt-1 ml-2"><br>
+					电话<input type="text" id="phone"class="mt-1 ml-2"><br>
+					邮箱<input type="text" id="pemail"class="mt-1 ml-2"><br>
+					性别<input type="radio" name="psex" id="man" value="1" class="ml-3"/>男
+					<input type="radio" name="psex" id="woman" value="0" class="ml-5"/>女
+					<input type="radio" name="psex" id="unk" value="-1" class="mt-1 ml-5"/>不祥<br>
+					<button type="button" onclick="update()" class="btn btn-outline-primary btn-lg bt_1">提交</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

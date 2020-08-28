@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<meta charset="utf-8">
+		<title>注册界面</title>
+		<style type="text/css">
+			*{margin: 0;padding: 0;}
+			#content{
+				width: 1300px;height: 600px;
+				margin: 0 auto;
+				color:  #818182;font-size: 12px;
+			}
+			#content>div{
+				width: 253px;
+				margin-left:511px;
+				margin-top:30px;
+				background-color: rgba(0,0,0,0.1);
+				padding:10px 5px;
+			}
+			#content>div>table{
+				width: 100%;
+			}
+			#content>div>table h5{
+				font-size: 18px;
+				margin-bottom:8px;
+			}
+			#content>div>table a{
+				color:#0AA1ED;
+				text-decoration: none;
+			}
+			#pusername,#pwd,#phone,#pname,#page,#pemail{
+				width: 100%;height: 30px;
+				background:#fff;
+				border:0;
+				outline:0;
+				margin-top:10px;
+				margin-bottom: 10px;
+				padding-left: 20px;
+				box-sizing: border-box;
+			}
+			#pusername_msg,#phone_msg,#pwd_msg,#pemail_msg,#pname_msg,#page_msg{color: #f00;}
+			#button_1{
+				width: 100%;height: 30px;
+				border:0;outline: 0;
+				border-radius: 10px;
+				background:#0aa1ed;
+				color:# #0069D9;
+				margin-top: 25px;
+			}
+		</style>
+		<script>
+		function show_pusername(){
+			pusername_msg.innerHTML="请您输入1-20位";
+			}
+		function check_pusername(){
+			var _pusername=pusername.value;
+				if(!_pusername){
+					pusername_msg.innerHTML="用户名不能为空";
+				}else if(_pusername.lengthlength<0||pusername.length>20){
+					pusername_msg.innerHTML="用户名格式错误";
+				}else{
+					pusername_msg.innerHTML="√";
+				}
+			}
+			function show_pwd(){
+				pwd_msg.innerHTML="请您输入1-20位";
+			}
+			function check_pwd(){
+				var _pwd=pwd.value;
+				if(!_pwd){
+					pwd_msg.innerHTML="密码不能为空";
+				}else if(_pwd.length<0||_pname.length>20){
+					pwd_msg.innerHTML="密码格式错误";
+				}else{
+					pwd_msg.innerHTML="√";
+				}
+			}
+			function show_phone(){
+				phone_msg.innerHTML="请您输入11位手机号";
+			}
+			function check_phone(){
+			var _phone=phone.value;
+				if(!_phone){
+					phone_msg.innerHTML="手机号名不能为空";
+				}else if(_phone.length!=11){
+					phone_msg.innerHTML="手机号格式错误";
+				}else{
+					phone_msg.innerHTML="√";
+					}
+				}
+			function show_pemail(){
+					pemail_msg.innerHTML="请您输入1-20位";;
+				}
+			function check_pemail(){
+					var _pemail=pemail.value;
+					if(!_pemail){
+						pemail_msg.innerHTML="邮箱不能为空";
+					}else if(_pemail.length<0||_pemail.length>20){
+						pemail_msg.innerHTML="邮箱格式错误";
+					}else{
+						pemail_msg.innerHTML="√";
+					}
+				}
+ 			function check_page(){
+				var _page=page.value;
+				if(!_page){
+					page_msg.innerHTML="年龄不能为空";
+				}else if(_page>0){
+					page_msg.innerHTML="√";
+				}else{
+					page_msg.innerHTML="年龄格式不正确";
+				}
+			} 
+			function check_pname(){
+				var _pname=pname.value;
+				if(!_pname){
+					pname_msg.innerHTML="姓名不能为空";
+				}else if(_pname.length<0||_pname.length>20){
+					pname_msg.innerHTML="格式错误";
+				}else{
+					pname_msg.innerHTML="√";
+				}
+			} 
+			function reg(){
+				//获取用户输入的数据
+				var _pname=pname.value;
+				var _pusername=pusername.value;
+				var _pwd=pwd.value;
+				var _page=page.value;
+				var _phone=phone.value;
+				var _pemail=pemail.value;
+				if(!_page){
+					alert("年龄不能为空");
+					return;
+				}
+				if(!_pname){
+					alert("姓名不能为空");
+					return ;
+				}
+				if(!_pusername){
+					alert("用户名不能为空");
+					return;
+				}
+				if(!_pwd){
+					alert("密码不能为空");
+					return;
+				}
+				if(!_phone){
+					alert("手机号不能为空");
+					return;
+				}
+				if(!_pemail){
+					alert("邮箱不能为空");
+					return;
+				}
+		
+				//1.创建xhr异步对象
+				var xhr=new XMLHttpRequest();
+				//4.创建监听，接收响应
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&&xhr.status==200){
+						var r=xhr.responseText;//r是1或者0
+						if(r=1){
+						alert("注册成功");
+						location.href="ajax_res_get_login.html";
+							
+						}else{
+						alert("注册失败");
+						}
+					}
+				}
+				xhr.open("post","/ajax/res_reg",true);
+				xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				var formdata=`pname=${_pname}&page=${_page}&pusername=${_pusername}&pwd=${_pwd}&phone=${_phone}&pemail=${_pemail}`;
+				xhr.send(formdata);
+			}
+			function search(){
+				var _pusername=pusername.value;
+				var xhr =new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+					if(xhr.status==200&&xhr.readyState==4){
+						var r=xhr.responseText;
+						if(r==1){
+						alert("该用户名已经注册");
+						return;
+						}else{
+						reg();
+						}
+					}
+				}
+				xhr.open("get",`/ajax/search/${_pusername}`,true);
+				xhr.send();
+			}
+			
+		</script>
+	</head>
+	<body style="background: url(2.jpg);">
+		<div id="content">
+			<table ></table>
+			<div id="">
+				<table>
+				<tr>
+					<td><h5>用户注册</h5></td>
+					<td align="right"><a href="ajax_res_get_login.html">直接登录</a></td>
+				</tr>
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
+				<tr>
+					<td colspan="2">用户名<input type="text" id="pusername" onfocus="show_pusername()" onblur="check_pusername()"placeholder="请输入用户名" valign="center"></td>
+				</tr>
+				<tr>
+					<td colspan="2"><span id="pusername_msg"></span></td>
+				</tr>
+				<tr>
+					<td colspan="2">手机号<input type="tel" id="phone" onfocus="show_phone()" onblur="check_phone()"placeholder="请输入手机号" ></td>
+				</tr>
+				<tr>
+					<td colspan="2"><span id="phone_msg"></span></td>
+				</tr>
+				<tr>
+					<td colspan="2">姓&nbsp;&nbsp;&nbsp;&nbsp;名<input type="text" id="pname" onfocus="show_pname()" onblur="check_pname()" placeholder="请输入姓名"></td>
+				</tr>
+				<tr>
+					<td colspan="2"><span id="pname_msg"></span></td>
+				</tr>
+				<tr>
+					<td colspan="2">密&nbsp;&nbsp;&nbsp;&nbsp;码<input type="password" id="pwd" onfocus="show_pwd()" onblur="check_pwd" placeholder="请输入密码" ></td>
+				</tr>
+				<tr>
+					<td colspan="2"><span id="pwd_msg"></span></td>
+				</tr>
+				<tr>
+					<td colspan="2">年&nbsp;&nbsp;&nbsp;&nbsp;龄<input type="number" onfocus="show_page()" onblur="check_page()" id="page" placeholder="请输入年龄"></td>
+				</tr>
+				<tr>
+					<td colspan="2"><span id="page_msg"></span></td>
+				</tr>
+				<tr>
+					<td colspan="2">邮&nbsp;&nbsp;&nbsp;&nbsp;箱<input type="email" id="pemail" onfocus="show_pemail()" onblur="check_pemail()"placeholder="请输入邮箱" ></td>
+				</tr>
+				<tr>
+					<td colspan="2"><span id="pemail_msg"></span></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<button onclick="search()" id="button_1">提交</button>
+					</td>
+				</tr>
+			</table>
+			</div>
+		</div>
+	</body>
+</html>
